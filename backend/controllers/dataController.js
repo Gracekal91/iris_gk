@@ -5,7 +5,11 @@ const getDataContent = async (req, res) => {
     try{
         const response = await axios.get(`${base_url}`);
         const {data} = response.data;
-        return res.status(200).send(data.data);
+        const content = data?.data;
+
+        //limit each row to 5 items
+        const items = content.map(item => item.slice(0, 5));
+        return res.status(200).send(items);
     }catch (e) {
         console.log('Error', e);
     }
@@ -20,7 +24,8 @@ const getPlotsItems = async (req, res) =>{
 const getVariables = async(req, res) =>{
     const response = await axios.get(`${base_url}`);
     const data = response.data;
-    return res.status(200).send(data?.data?.variables);
+    const vars = data?.data?.variables.slice(0, 5);
+    return res.status(200).send(vars);
 }
 
 module.exports = {
