@@ -1,23 +1,42 @@
-import logo from './logo.svg';
 import './App.css';
+import Tabular from "./components/Tabular";
+import {useFetchData} from "./hooks/useFetchData";
+import{useEffect, useState} from "react";
 
 function App() {
+
+    const {
+        data: columns,
+        loading: columnsLoading,
+        error: columnsError,
+        fetchData: fetchColumns
+    } = useFetchData();
+
+    const {
+        data: rows,
+        loading: rowsLoading,
+        error: rowsError,
+        fetchData: fetchRows
+    } = useFetchData();
+
+
+    useEffect(() =>{
+        fetchColumns('/variables');
+        fetchRows('/data')
+    }, []);
+
+
+    if (columnsError) console.log('Error fetching tab headers:', columnsError);
+    if (columnsLoading) console.log('Loading tab headers...');
+    console.log('Tab headers:', columns);
+
+    if (rowsError) console.log('Error fetching rows:', rowsError);
+    if (rowsLoading) console.log('Loading rows...');
+    console.log('Rows:', rows);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+        <Tabular columns={columns} rows={rows}/>
     </div>
   );
 }
