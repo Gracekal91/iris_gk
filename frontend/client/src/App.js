@@ -2,6 +2,8 @@ import './App.css';
 import Tabular from "./components/Tabular";
 import {useFetchData} from "./hooks/useFetchData";
 import{useEffect, useState} from "react";
+import LineChart from "./components/LineChart";
+import {Box} from "@mui/material";
 
 function App() {
 
@@ -37,6 +39,9 @@ function App() {
   return (
     <div className="app">
         <Tabular columns={columns} rows={rows}/>
+        <Box height="350px" m="-20px 0 0 0" width='100%'>
+            <LineChart/>
+        </Box>
     </div>
   );
 }

@@ -1,11 +1,31 @@
 import {DataGrid} from '@mui/x-data-grid';
-import {useHeadersMutation} from "../queries/HeadersQuery";
+import {styled, TableCell, tableCellClasses, TableRow} from "@mui/material";
+
+const StyledTableCell = styled(TableCell)(({theme}) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
+}));
+
+const StyledTableRow = styled(TableRow)(({theme}) => ({
+    '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+        border: 0,
+    },
+}));
 
 
-const Tabular = ({columns, rows}) => {
-    if ( !columns || !rows) return 'loading ...'
+const Tabular = ({rows}) => {
+    if (!rows) return 'loading ...'
 
-    const newColumns = [
+    const columns = [
         {field: 'bps_in', headerName: 'BPS IN', width: 170},
         {field: 'bps_out', headerName: 'BPS OUT', width: 170},
         {field: 'packets_in', headerName: 'PACKETS IN', width: 170},
@@ -24,14 +44,17 @@ const Tabular = ({columns, rows}) => {
 
     return (
         <>
-            <div style={{height: 400, width: '100%'}}>
+            <div style={{height: 450, width: '100%'}}>
                 <DataGrid
-                    columns={newColumns}
-                    rows={newRows}>
-                    pagination
-                    pageSize={6}
-                    autoHeight
-                </DataGrid>
+                    columns={columns}
+                    rows={newRows}
+                    initialState={{
+                        pagination: {
+                            paginationModel: {page: 0, pageSize: 8},
+                        },
+                    }}
+                    pageSizeOptions={[8, 16]}
+                />
             </div>
         </>
     )
